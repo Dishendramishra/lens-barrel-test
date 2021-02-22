@@ -56,7 +56,7 @@ def remove_latex(s):
     return s
 
 def plot(x,y,limits=None,title=None):
-    plt.figure(figsize=(19.20,10.80))
+    plt.figure(figsize=(11.69,8.27))    # A4 size
     if limits:
         plt.axis(limits)
     if title:
@@ -67,6 +67,7 @@ def plot(x,y,limits=None,title=None):
     plt.tight_layout()
     plt.grid(True)
     plt.plot(x,y)
+    print("saving image: "+remove_latex(title))
     plt.savefig(remove_latex(title)+".png",dpi=300)
     # plt.show()  
 
@@ -84,6 +85,7 @@ lens_filenames      = glob.glob("lens*.txt")
 ref_filenames       = glob.glob("ref*.txt")
 
 #  Combing frames
+print("combing frames .....\n")
 darks       = combine_frames(darks_filenames,avg_type="median")
 filter_1    = combine_frames(filter_1_filenames,avg_type="median")
 filter_2    = combine_frames(filter_2_filenames,avg_type="median")
@@ -91,6 +93,7 @@ lens        = combine_frames(lens_filenames,avg_type="median")
 ref         = combine_frames(ref_filenames,avg_type="median")
 
 #  Taking Moving Average of the combined frames
+print("taking moving average .....\n")
 darks[:,1]      = uniform_filter1d(darks[:,1],size=3)
 filter_1[:,1]   = uniform_filter1d(filter_1[:,1],size=3)
 filter_2[:,1]   = uniform_filter1d(filter_2[:,1],size=3)
@@ -98,6 +101,7 @@ lens[:,1]       = uniform_filter1d(lens[:,1],size=3)
 ref[:,1]        = uniform_filter1d(ref[:,1],size=3)
 
 # Subtracting Darks
+print("subtracting dark from frames .....\n")
 lens[:,1]       = lens[:,1] - darks[:,1]
 ref[:,1]        = ref[:,1] - darks[:,1]
 filter_1[:,1]   = filter_1[:,1] - darks[:,1]
