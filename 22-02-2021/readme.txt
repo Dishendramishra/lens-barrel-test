@@ -1,0 +1,1 @@
+All exposures are 2.3 seconds
